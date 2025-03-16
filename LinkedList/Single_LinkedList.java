@@ -73,7 +73,7 @@ class Single_LinkedList {
     }
 
     public static void main(String[] args) {
-        System.out.println("Try programiz.pro");
+       
 
         Single_LinkedList linkedList = new Single_LinkedList(); // Corrected instantiation
         linkedList.addAtFront(12);
