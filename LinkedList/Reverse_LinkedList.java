@@ -23,7 +23,7 @@ public class Reverse_LinkedList {
         head = newNode;
     }
 
-    //function to reverse a linked list
+    //function to reverse a linked list using loop 
     void reverse() {
         if (head == null || head.next == null) {
             return;
@@ -31,16 +31,32 @@ public class Reverse_LinkedList {
         Node prev = null;
         Node curr = head;
         Node nextNode = null;
-
+    //2-->3-->4
+    //3-->2-->4
+    //4-->3-->2
         while (curr != null) {
-            nextNode = curr.next;
-            curr.next = prev;
-            prev = curr;
-            curr = nextNode;
+            nextNode = curr.next;//3  //4   //null
+            curr.next = prev;//break //break   //2
+            prev = curr;//2   //2
+            curr = nextNode;//3  //4
         }
         head = prev;
     }
+//function to reverse a linked list using recurcively
 
+public Node reverseListByRecursion(Node head){
+
+    if(head==null || head.next==null){
+        return head;
+    }
+
+
+    Node newNode=reverseListByRecursion(head.next);
+    head.next.next=head;
+    head.next=null;
+    return newNode;
+
+}
     // Function to print the linked list
     void printList() {
         Node temp = head;
@@ -62,7 +78,8 @@ public class Reverse_LinkedList {
         r1.addAtFront(346);
 
         r1.printList();
-        r1.reverse();
+        //r1.reverse();
+      r1.head=  r1.reverseListByRecursion(r1.head);
         r1.printList();
 
     }
