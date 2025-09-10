@@ -5,7 +5,7 @@ public class QueueUsing2Stack {
     static Stack<Integer>s1=new Stack<>();
     static Stack<Integer>s2=new Stack<>();
 public static boolean isEmpty(){
-    return s1.isEmpty();
+    
 }
 //add -O(n)
 public static void add(int data){
@@ -41,5 +41,6 @@ public static void main(String[] args) {
         System.out.println(q.peek());
          q.remove();
     }
+    
 
 }}
