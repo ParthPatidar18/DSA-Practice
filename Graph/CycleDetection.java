@@ -2,26 +2,22 @@
 package Graph;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
-
-import javax.management.Query;
 
 public class CycleDetection {
     static class Edge {
-        //for unweigted graph
         int src;
         int dest;
-        //for weighted graph 
-        //int wt
-        public Edge(int s,int d){
-            this.src=s;
-            this.dest=d;
-        }        
+
+        public Edge(int s, int d) {
+            this.src = s;
+            this.dest = d;
+        }
     }
-    public static void createGraph(ArrayList<Edge>graph[]){
+
+    // Graph creation
+    public static void createGraph(ArrayList<Edge> graph[]) {
         for (int i = 0; i < graph.length; i++) {
-            graph[i]=new ArrayList<Edge>();
+            graph[i] = new ArrayList<Edge>();
         }
         graph[0].add(new Edge(0, 2));
 
@@ -36,38 +32,46 @@ public class CycleDetection {
         graph[3].add(new Edge(3, 2));
     }
 
-public static void bfs(ArrayList <Edge>graph[],int v,boolean vis[],int start){
-    Queue <Integer>q=new LinkedList<>();
-    //boolean vis[]=new boolean[v];
-    q.add(start);
-    while (!q.isEmpty()) {
-        int curr=q.remove();
-        if(vis[curr]==false){
-            System.out.println(curr+" ");
-            vis[curr]=true;
-            for (int i = 0; i < graph[curr].size(); i++) {
-                Edge e=graph[curr].get(i);
-                q.add(e.dest);
+    // Cycle detection (undirected graph)
+    public static boolean detectcycle(ArrayList<Edge> graph[]) {
+        boolean vis[] = new boolean[graph.length];
+        for (int i = 0; i < graph.length; i++) {
+            if (!vis[i]) {
+                if (detectcycleutil(graph, vis, i, -1)) {
+                    return true; // cycle found
+                }
             }
         }
+        return false;
     }
-}
+
+    // DFS utility
+    public static boolean detectcycleutil(ArrayList<Edge> graph[], boolean vis[], int curr, int par) {
+        vis[curr] = true;
+
+        for (int i = 0; i < graph[curr].size(); i++) {
+            Edge e = graph[curr].get(i);
+
+            // Case 1: If neighbor not visited → DFS
+            if (!vis[e.dest]) {
+                if (detectcycleutil(graph, vis, e.dest, curr)) {
+                    return true;
+                }
+            }
+            // Case 2: If neighbor is visited and not parent → cycle
+            else if (e.dest != par) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     public static void main(String[] args) {
-        int v=4;
-        ArrayList<Edge> graph[]=new ArrayList[v];
-       
+        int v = 4;
+        ArrayList<Edge> graph[] = new ArrayList[v];
+
         createGraph(graph);
-        boolean vis[]=new boolean[v];
-        for (int i = 0; i < v; i++) {
-            if (vis[i]==false) {
-                bfs(graph,v,vis,i);
-            }
-        }
-        
-        // for (int i = 0; i < graph[2].size(); i++) {
-        //    Edge e=graph[2].get(i);
-        //     System.out.println(e.dest);
-        // }
+        System.out.println(detectcycle(graph)); // true (cycle exists)
     }
 }
